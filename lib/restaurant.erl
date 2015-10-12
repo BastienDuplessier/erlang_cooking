@@ -1,7 +1,7 @@
 -module(restaurant).
--export([run/0]).
+-export([create/0, run/1]).
 
-run() -> run({[], []}).
+create() -> spawn(?MODULE, run, [{[], []}]).
 
 run({Cooks, Waiters}) ->
     receive
