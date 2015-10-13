@@ -1,5 +1,4 @@
 -module(restaurant).
--export([create/0, run/1]).
 -export([create/0, run/1, add_cook/2]).
 
 create() -> spawn(?MODULE, run, [{[], []}]).
