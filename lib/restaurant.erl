@@ -8,6 +8,9 @@ run({Cooks, Waiters}) ->
 	{add_cook, Name} ->
  	    Cook = cook:create(Name),
 	    run({[Cook|Cooks], Waiters});
+	{add_waiter, Name} ->
+ 	    Waiter = cook:create(Name),
+	    run({Cooks, [Waiter|Waiters]});
 	status ->
 	    io:format("Currently with Cooks : ~w and Waiters : ~w ", [Cooks, Waiters]),
 	    run({Cooks, Waiters});
