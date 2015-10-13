@@ -1,5 +1,5 @@
 -module(restaurant).
--export([create/0, run/1, add_cook/2]).
+-export([create/0, run/1, add_cook/2, add_waiter/2]).
 
 create() -> spawn(?MODULE, run, [{[], []}]).
 
@@ -19,3 +19,5 @@ run({Cooks, Waiters}) ->
 
 add_cook(Restaurant, Name) ->
     Restaurant ! {add_cook, Name}.
+add_waiter(Restaurant, Name) ->
+    Restaurant ! {add_waiter, Name}.
