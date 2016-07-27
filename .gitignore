@@ -1,2 +1,3 @@
 # Compiled Erlang files
 *.beam
+_build/
