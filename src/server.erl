@@ -1,18 +1,19 @@
 -module(server).
--export([init/1]).
+-export([init/2]).
 
 -define(TIMEOUT, 10000).
+-record(state, {name, from}).
 
-init(Name) ->
+init(Name, From) ->
     io:format("Server ~s was recruited.~n", [Name]),
-    run(Name).
+    run(#state{name=Name,from=From}).
 
-run(Name) ->
+run(State) ->
     receive
         terminate ->
-            io:format("Server ~s was fired !~n", [Name]),
+            io:format("Server ~s was fired !~n", [State#state.name]),
             ok
     after ?TIMEOUT ->
-            io:format("Server ~s is waiting orders.~n", [Name]),
-            run(Name)
+            io:format("Server ~s is waiting orders.~n", [State#state.name]),
+            run(State)
     end.

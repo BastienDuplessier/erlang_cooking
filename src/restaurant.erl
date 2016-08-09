@@ -4,13 +4,13 @@
 -record(state, {name, cooks=[], servers=[], clients=maps:new()}).
 
 new_cook(Name) ->
-    spawn_link(cook, init, [Name]).
+    spawn_link(cook, init, [Name, self()]).
 
 new_server(Name) ->
-    spawn_link(server, init, [Name]).
+    spawn_link(server, init, [Name, self()]).
 
 new_client(Name, Dish) ->
-    spawn_link(client, init, [Name, Dish]).
+    spawn_link(client, init, [Name, Dish, self()]).
 
 init(Name) ->
     spawn_link(?MODULE, run, [#state{name=Name}]).
@@ -36,7 +36,7 @@ run(State) ->
                 error ->
                     % Not yet exists
                     NewClient = new_client(Name, Dish),
-                    self() ! {handle_client, Name},
+                    self() ! {handle_client, NewClient},
                     run(State#state{clients=maps:put(Name, NewClient, Clients)})
             end;
         terminate ->

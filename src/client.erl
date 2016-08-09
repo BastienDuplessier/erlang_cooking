@@ -1,14 +1,12 @@
 -module(client).
--export([init/2]).
+-export([init/3]).
 
--record(state, {name, dish}).
+-define(TIMEOUT, 60000).
+-record(state, {name, dish, from}).
 
--define(TIMEOUT, 10000).
-
-
-init(Name, Dish) ->
+init(Name, Dish, From) ->
     io:format("Client ~s arrives in the restaurant.~n", [Name]),
-    wait_server(#state{name=Name, dish=Dish}).
+    wait_server(#state{name=Name, dish=Dish, from=From}).
 
 wait_server(State) ->
     receive
@@ -16,6 +14,6 @@ wait_server(State) ->
             io:format("Client ~s is gone.~n", [State#state.name]),
             ok
     after ?TIMEOUT ->
-            io:format("Client ~s is waiting.~n", [State#state.name]),
-            wait_server(State)
+            io:format("Client ~s is gone.~n", [State#state.name]),
+            ok
     end.

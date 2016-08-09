@@ -1,12 +1,13 @@
 -module(cook).
--export([init/1]).
+-export([init/2]).
 
 -define(TIMEOUT, 10000).
 -define(COOKTIME, 5000).
+-record(state, {name, from}).
 
-init(Name) ->
+init(Name, From) ->
     io:format("Cook ~s was recruited.~n", [Name]),
-    run(Name).
+    run(#state{name=Name,from=From}).
 
 run(Name) ->
     receive
