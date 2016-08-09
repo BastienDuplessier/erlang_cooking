@@ -9,24 +9,24 @@ init(Name, From) ->
     io:format("Cook ~s was recruited.~n", [Name]),
     run(#state{name=Name,from=From}).
 
-run(Name) ->
+run(State) ->
     receive
-        {order, Order, From} ->
-            io:format("Cook ~s received order.~n", [Name]),
-            cook(Name, Order, From);
+        {order, Order, Client} ->
+            io:format("Cook ~s received order.~n", [State#state.name]),
+            cook(State, Order, Client);
         terminate ->
-            io:format("Cook ~s was fired !~n", [Name]),
+            io:format("Cook ~s was fired !~n", [State#state.name]),
             ok
     after ?TIMEOUT ->
-            io:format("Cook ~s is waiting orders.~n", [Name]),
-            run(Name)
+            io:format("Cook ~s is waiting orders.~n", [State#state.name]),
+            run(State)
     end.
 
-cook(Name, {Dish, For}, From) ->
-    io:format("Cook ~s stating to cook ~s !~n", [Name, Dish]),
+cook(State, Dish, Client) ->
+    io:format("Cook ~s stating to cook ~s !~n", [State#state.name, Dish]),
     receive
     after ?COOKTIME ->
-            io:format("Cook ~s finished to cook ~s !~n ", [Name, Dish]),
-            From ! {self(), {Dish, For}},
-            run(Name)
+            io:format("Cook ~s finished to cook ~s !~n ", [State#state.name, Dish]),
+            State#state.from ! {finished, {Dish, Client}, self()},
+            run(State)
     end.
