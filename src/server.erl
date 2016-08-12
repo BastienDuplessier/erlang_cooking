@@ -21,7 +21,7 @@ run(State) ->
             State#state.from ! {return, self()},
             run(State);
         {bill, Client} ->
-            Client ! {ask_to_pay, 20},
+            Client ! {ask_to_pay, 20, self()},
             run(State);
         {pay, Amount, ClientName} ->
             State#state.from ! {store_money, Amount, ClientName},

@@ -3,6 +3,7 @@
 
 -record(state, {
           name,
+          money=0,
           cooks=[],
           servers=[],
           clients=maps:new(),
@@ -79,10 +80,11 @@ run(State) ->
             case State#state.servers of
                 [Server|Rest] ->
                     Server ! {bill, Client},
+                    run(State#state{servers=Rest}),
                     run(State);
                 [] ->
                     Waiting = State#state.waiting_clients,
-                    run(State#state{waiting_clients=queue:in({pay, Client}, Waiting), cooks=Cooks})
+                    run(State#state{waiting_clients=queue:in({pay, Client}, Waiting)})
             end;
         {return, Server} ->
             Servers = [Server|State#state.servers],
