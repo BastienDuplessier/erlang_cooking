@@ -26,7 +26,7 @@ Restaurant ! {new_server, "Shlaguetto"}.
 
 And then, throw them some clients !!
 ```
-Restaurant ! {new_client, "José Mauvais", beef).
+Restaurant ! {new_client, "José Mauvais", beef}.
 ```
 
 Now see how they handle him \o\.
