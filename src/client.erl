@@ -21,7 +21,7 @@ run(State) ->
             io:format("Client ~s has paid and now is gone.~n", [State#state.name]);
         terminate ->
             io:format("Client ~s is gone.~n", [State#state.name]),
-            ok:
+            ok
     after ?TIMEOUT ->
             io:format("Client ~s is gone after waiting too long.~n", [State#state.name]),
             ok
