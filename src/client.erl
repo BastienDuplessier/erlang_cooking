@@ -28,6 +28,7 @@ run(State) ->
     end.
 
 eat_dish(State, Dish) ->
+    io:format("Client ~s is now eating ~s.~n", [State#state.name, Dish]),
     receive
     after ?EAT_TIME ->
             State#state.from ! {finished, self()},
