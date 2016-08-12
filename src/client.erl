@@ -2,7 +2,7 @@
 -export([init/3]).
 
 -define(TIMEOUT, 60000).
--define(EAT_TIME, 60000).
+-define(EAT_TIME, 10000).
 -record(state, {name, dish, from}).
 
 init(Name, Dish, From) ->
