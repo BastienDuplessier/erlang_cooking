@@ -61,7 +61,7 @@ run(State) ->
             case State#state.cooks of
                 [Cook|Rest] ->
                     Cook ! {order, Dish, Client},
-                    check_remaining_clients(State#state{cooks=[Rest], servers=Servers});
+                    check_remaining_clients(State#state{cooks=Rest, servers=Servers});
                 [] ->
                     Waiting = State#state.waiting_dishes,
                     check_remaining_clients(State#state{waiting_dishes=queue:in({order, Dish, Client}, Waiting), servers=Servers})
@@ -71,7 +71,7 @@ run(State) ->
             case State#state.servers of
                 [Server|Rest] ->
                     Server ! {send, Dish, Client},
-                    check_remaining_dishes(State#state{servers=[Rest], cooks=Cooks});
+                    check_remaining_dishes(State#state{servers=Rest, cooks=Cooks});
                 [] ->
                     Waiting = State#state.waiting_dishes,
                     check_remaining_dishes(State#state{waiting_dishes=queue:in({dish, Dish, Client}, Waiting), cooks=Cooks})
